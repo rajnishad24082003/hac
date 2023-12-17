@@ -32,16 +32,7 @@ const statusMap = {
 };
 
 export const OverviewLatestOrders = (props) => {
-  const { orders = [], sx, open } = props;
-
-  let [fetchedData, setfetchedData] = useState({});
-  let funcAxios = async (url) => {
-    let response = await axios.get(url);
-    setfetchedData({ shodan: response.data.Data[0].ShodanData });
-  };
-  useEffect(() => {
-    funcAxios("http://10.1.17.129:3000/shodandata");
-  }, []);
+  const { orders = [], sx, open, resFetch } = props;
 
   return (
     <Card sx={sx}>
@@ -61,7 +52,7 @@ export const OverviewLatestOrders = (props) => {
                   <TableRow hover key={order.id}>
                     <TableCell
                       onClick={() => {
-                        open(fetchedData, order);
+                        open(resFetch, order);
                       }}
                     >
                       {order.ref}
@@ -70,7 +61,7 @@ export const OverviewLatestOrders = (props) => {
                       <SvgIcon fontSize="small" sx={{ color: "neutral.500" }}>
                         <ArrowDownLeftIcon
                           onClick={() => {
-                            open(fetchedData, order);
+                            open(resFetch, order);
                           }}
                         />
                       </SvgIcon>

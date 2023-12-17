@@ -8,6 +8,7 @@ import {
   PDFViewer,
 } from "@react-pdf/renderer";
 import Cve from "./Cve";
+import Running from "./Running";
 
 const styles = StyleSheet.create({
   mainheading: {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Compdf = ({ pdfcontent }) => {
+const Compdf = ({ pdfcontent, orderval }) => {
   return (
     <PDFViewer width="100%" height="600px">
       <Document>
@@ -46,8 +47,22 @@ const Compdf = ({ pdfcontent }) => {
             </View>
           </View> */}
           <View>
-            <Cve data={pdfcontent.shodan}></Cve>
+            <Text style={styles.mainheading}>{pdfcontent.domain}</Text>
           </View>
+          {orderval.ref === "Public Reconnaissance" ? (
+            <View>
+              <Cve data={pdfcontent.ShodanData}></Cve>
+            </View>
+          ) : (
+            <View></View>
+          )}
+          {orderval.ref === "Running Services" ? (
+            <View>
+              <Running data={pdfcontent.postss}></Running>
+            </View>
+          ) : (
+            <View></View>
+          )}
         </Page>
       </Document>
     </PDFViewer>

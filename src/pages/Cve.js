@@ -9,10 +9,6 @@ import {
 } from "@react-pdf/renderer";
 import axios from "axios";
 import { useState, useEffect } from "react";
-
-const columnCount = 3;
-const columnWidth = 100 / columnCount;
-
 const styles = StyleSheet.create({
   cont: {
     padding: 10,
@@ -21,26 +17,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
+    fontSize: 16,
+    fontWeight: "bold",
   },
-  maincol: {},
-  column: {
-    width: `${columnWidth}%`,
-    marginBottom: 10,
-    display: "flex",
-    justifyContent: "center",
-    flexDirection: "row",
-    border: "1px solid black",
-    borderRadius: "50%",
-    paddingHorizontal: 5,
-    paddingVertical: 10,
-    backgroundColor: "#0C0404",
-    color: "#FDFCFA",
+  maincol: {
+    fontSize: 16,
+    fontWeight: "bold",
   },
-  colfont: {
-    fontSize: 12,
-  },
+
   vul: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 400,
   },
   comp: {
@@ -63,31 +49,40 @@ const styles = StyleSheet.create({
     border: "1px solid black",
     padding: 5,
   },
+  url: {
+    color: "blue",
+  },
+  heading2: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 12,
+  },
+  heading3: {
+    fontSize: 12,
+    marginTop: 10,
+  },
+  keyvalue: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  keyvaluekey: {
+    marginRight: 20,
+  },
+  block: {
+    marginTop: 5,
+  },
 });
 
 const Cve = ({ data }) => {
-  console.log(data);
-  let [cvedata, setcvedata] = useState([]);
-  let modify = [];
-  //   data.Vulns.map(async (val, index) => {
-  //     let url = `https://cve.circl.lu/api/cve/${val}`;
-  //     let response = await axios.get(url);
-  //     console.log(response);
-  //   });
-  let fun = async () => {
-    let response = await axios.get(
-      "https://cve.circl.lu/api/cve/CVE-2018-15473"
-    );
-    console.log(response);
-  };
-  useEffect(() => {
-    fun();
-  }, []);
+  //console.log(data);
+  //console.log(data.Vulns[0]);
   return (
     <View style={styles.cont}>
       <View className="userDetails" style={styles.userDetails}>
         <View className="left" style={styles.left}>
-          <Text style={styles.cell}>ISP</Text>
+          <Text style={styles.cell} styles={styles.url}>
+            ISP
+          </Text>
           <Text style={styles.cell}>IP</Text>
           <Text style={styles.cell}>City</Text>
           <Text style={styles.cell}>ASN</Text>
@@ -96,11 +91,11 @@ const Cve = ({ data }) => {
         </View>
         <View className="right" style={styles.right}>
           <Text style={styles.cell}>{data.isp}</Text>
-          <Text style={styles.cell}>{data.ip}</Text>
-          <Text style={styles.cell}>{data.city}</Text>
-          <Text style={styles.cell}>{data.asn}</Text>
+          <Text style={styles.cell}>{data.ip ? data.ip : "no data"}</Text>
+          <Text style={styles.cell}>{data.city ? data.city : "no data"}</Text>
+          <Text style={styles.cell}>{data.asn ? data.asn : "no data"}</Text>
           <Text style={styles.cell}>{data.countryCode}</Text>
-          <Text style={styles.cell}>{data.org}</Text>
+          <Text style={styles.cell}>{data.org ? data.org : ""}</Text>
         </View>
       </View>
       <View style={styles.comp}>
@@ -109,21 +104,6 @@ const Cve = ({ data }) => {
         </View>
         <View style={styles.maindiv}>
           <Text> {data.ports ? data.ports.join(",") : ""}</Text>
-        </View>
-      </View>
-
-      <View style={styles.comp}>
-        <View style={styles.vul}>
-          <Text>Vulnerabilies :-</Text>
-        </View>
-        <View style={styles.maindiv}>
-          {data.Vulns
-            ? data.Vulns.map((item, index) => (
-                <View key={index} style={styles.column}>
-                  <Text style={styles.colfont}>{item}</Text>
-                </View>
-              ))
-            : ""}
         </View>
       </View>
       <View style={styles.comp}>
@@ -136,7 +116,7 @@ const Cve = ({ data }) => {
                 return (
                   <View key={index}>
                     <Text>
-                      {index + 1}. {item}
+                      {index + 1}.{item}
                     </Text>
                   </View>
                 );
@@ -154,12 +134,64 @@ const Cve = ({ data }) => {
                 return (
                   <View key={index}>
                     <Text>
-                      {index + 1}. {item}
+                      {index + 1}.{item}
                     </Text>
                   </View>
                 );
               })
             : ""}
+        </View>
+      </View>
+      <View style={styles.comp}>
+        <View style={styles.vul}>
+          <Text>Vulnerabilies :-</Text>
+        </View>
+        <View>
+          {data.Vulns[0] ? (
+            Object.keys(data.Vulns[0]).map((key, ind) => {
+              return (
+                <View key={ind}>
+                  <View>
+                    <Text style={styles.heading2}>
+                      {1 + ind}. {key}
+                    </Text>
+                  </View>
+                  <View style={styles.heading3}>
+                    <View style={styles.keyvalue}>
+                      <View style={styles.keyvaluekey}>
+                        <Text>CVSS :</Text>
+                      </View>
+                      <View>
+                        <Text>{data.Vulns[0][key].cvss}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.block}>
+                      <Text style={styles.keyvalue}>References :</Text>
+                      {data.Vulns[0][key].references ? (
+                        data.Vulns[0][key].references.map((val, ind) => {
+                          return (
+                            <View key={ind}>
+                              <Text>
+                                {1 + ind}.{val}
+                              </Text>
+                            </View>
+                          );
+                        })
+                      ) : (
+                        <></>
+                      )}
+                    </View>
+                    <View style={styles.block}>
+                      <Text>Summary :</Text>
+                      <Text>{data.Vulns[0][key].summary}</Text>
+                    </View>
+                  </View>
+                </View>
+              );
+            })
+          ) : (
+            <></>
+          )}
         </View>
       </View>
     </View>

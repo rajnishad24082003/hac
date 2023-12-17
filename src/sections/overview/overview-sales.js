@@ -75,18 +75,16 @@ const useChartOptions = () => {
         show: true,
       },
       categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        "A01:2021-Broken Access Control",
+        "A02:2021-Cryptographic Failures",
+        "A03:2021-Injection",
+        "A04:2021-Insecure Design",
+        "A05:2021-Security Misconfiguration",
+        "A06:2021-Vulnerable",
+        "A07:2021-Identification",
+        "A08:2021-Software and Data Integrity Failures ",
+        "A09:2021-Security Logging",
+        "A10:2021-Server-Side Reques",
       ],
       labels: {
         offsetY: 5,
@@ -97,7 +95,7 @@ const useChartOptions = () => {
     },
     yaxis: {
       labels: {
-        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
+        formatter: (value) => (value > 0 ? `${value}%` : `${value}`),
         offsetX: -10,
         style: {
           colors: theme.palette.text.secondary,

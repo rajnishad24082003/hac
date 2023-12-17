@@ -26,7 +26,7 @@ export const OverviewBudget = (props) => {
         >
           <Stack spacing={1}>
             <Typography color="text.secondary" variant="overline">
-            Critical vulnerability
+              Average Vulnerability score
             </Typography>
             <Typography variant="h4">{value}</Typography>
           </Stack>
@@ -42,21 +42,6 @@ export const OverviewBudget = (props) => {
             </SvgIcon>
           </Avatar>
         </Stack>
-        {difference && (
-          <Stack alignItems="center" direction="row" spacing={2} sx={{ mt: 2 }}>
-            <Stack
-              alignItems="center"
-              direction="row"
-              spacing={0.5}
-              style={{ color: "red" }}
-            >
-              +15
-            </Stack>
-            <Typography color="text.secondary" variant="caption">
-              {date.getDate()}/{date.getMonth()}/{date.getFullYear()}
-            </Typography>
-          </Stack>
-        )}
       </CardContent>
     </Card>
   );
